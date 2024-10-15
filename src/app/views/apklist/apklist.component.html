@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title style="text-align: center;">Subir Video</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding content-background">
+  <ion-card class="video-card">
+    <ion-card-header>
+      <ion-card-title color="primary" style="text-align: center;">Subir Nuevo Video</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+
+      <!-- Nombre del Video -->
+      <ion-item>
+        <ion-label position="floating" style="text-align: center;">Nombre del Video</ion-label>
+        <ion-input [(ngModel)]="nombreVideo" placeholder="Ingrese el nombre"></ion-input>
+      </ion-item>
+
+      <!-- Descripción del Video -->
+      <ion-item>
+        <ion-label position="floating" style="text-align: center;">Descripción del Video</ion-label>
+        <ion-textarea [(ngModel)]="descripcionVideo" placeholder="Ingrese una descripción"></ion-textarea>
+      </ion-item>
+
+      <!-- Subir Imagen (Opcional) -->
+      <ion-item>
+        <ion-label>Subir Imagen (Opcional)</ion-label>
+        <input type="file" (change)="onFileSelected($event, 'imagen')"/>
+      </ion-item>
+
+      <!-- Subir Video -->
+      <ion-item>
+        <ion-label>Subir Video</ion-label>
+        <input type="file" (change)="onFileSelected($event, 'video')"/>
+      </ion-item>
+
+      <!-- Botón para Subir Video -->
+      <ion-button expand="block" color="primary" (click)="subirVideo()">
+        Subir Video
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Mostrar Videos -->
+  <ion-list *ngIf="videos.length > 0">
+    <ion-item *ngFor="let video of videos">
+      <ion-label>
+        <h2>{{ video.nombre }}</h2>
+        <p>{{ video.descripcion }}</p>
+        <img *ngIf="video.imagenUrl" [src]="video.imagenUrl" alt="{{ video.nombre }}" style="max-width: 100px;"/>
+      </ion-label>
+      <ion-button fill="outline" color="danger" (click)="borrarVideo(video.id)">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+        Borrar
+      </ion-button>
+      <ion-button fill="outline" color="success" [href]="video.videoUrl" [download]="video.nombre + '.mp4'">
+        <ion-icon slot="icon-only" name="download-outline"></ion-icon>
+        Descargar
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-text *ngIf="videos.length === 0" color="medium" style="text-align: center; display: block;">No hay videos subidos.</ion-text>
+</ion-content>
